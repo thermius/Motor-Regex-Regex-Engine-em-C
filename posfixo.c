@@ -44,15 +44,16 @@ char *ConverterParaPosfixo (char *entrada, unsigned int tamanho_string)
 		/*Se fechamento, desempilha tudo e joga na saida enquanto não for vazio ou '('*/
 		if (entrada[index_entrada] == ')')
 		{
-			char elemento = 0;
+			char *elemento = NULL;
 			while (!Vazio (pilha_operadores) && *(char*)Topo (pilha_operadores)!= '(')
 			{
-				elemento = *(char*) Desempilhar (&pilha_operadores);
-				ptr_saida [index_saida++] = elemento;
+				elemento = (char*) Desempilhar (&pilha_operadores);
+				ptr_saida [index_saida++] = *elemento;
+				free (elemento);
 			}
 
-			/* Remove o '(' da pilha*/
-			Desempilhar (&pilha_operadores);
+			/*Remove o '(' da pilha*/
+			elemento = (char*)Desempilhar (&pilha_operadores); if (elemento!= NULL) free (elemento);
 
 			/*Avança  a entrada*/
 			index_entrada++;
@@ -65,8 +66,9 @@ char *ConverterParaPosfixo (char *entrada, unsigned int tamanho_string)
 			/*Enquanto a procedencia do topo da pilha for maior ou igual, desempilha o topo e insere na saida*/
 			while ( Topo (pilha_operadores) != NULL && Procedencia( *(char*) Topo (pilha_operadores)) >= Procedencia ( entrada[index_entrada]))
 			{
-				char elemento = *(char*) Desempilhar (&pilha_operadores);
-				ptr_saida [index_saida++] = elemento;
+				char *elemento = (char*) Desempilhar (&pilha_operadores);
+				ptr_saida [index_saida++] = *elemento;
+				free (elemento);
 
 			}
 			/* Empilha o operador atual no momento em que sua procedencia for menor que o topo*/
@@ -81,8 +83,9 @@ char *ConverterParaPosfixo (char *entrada, unsigned int tamanho_string)
 	/*Ao fim da string, esvazia a pilha de operadores*/
 	while (!Vazio(pilha_operadores))
 	{
-		char elemento = *(char*) Desempilhar (&pilha_operadores);
-		ptr_saida [index_saida++] = elemento;
+		char *elemento = (char*) Desempilhar (&pilha_operadores);
+		ptr_saida [index_saida++] = *elemento;
+		free (elemento);
 	}
 
 	/*Encerra a string e retorna*/
