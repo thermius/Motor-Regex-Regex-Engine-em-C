@@ -41,7 +41,7 @@ O projeto tem como foco a aplicação prática de conceitos de **Teoria de Lingu
 ---
 Limitação atual: a implementação não possui um operador explícito de concatenação e não trata concatenação implícita entre elementos. Por exemplo, (ab)* não é interpretado como repetição de ab.
 
-🏗️ Arquitetura do Motor
+## 🏗️ Arquitetura do Motor
 
 O pipeline de execução segue as etapas clássicas de processamento de linguagens formais:
 Plaintext
