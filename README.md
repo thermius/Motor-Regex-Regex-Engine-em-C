@@ -108,18 +108,22 @@ Após compilar, basta rodar o executável gerado:
 ```bash
 ./motor_regex
 ```
-## 🧹 Gerenciamento de Memória (valgrind)
-```
-==4439== 
+## 🧹 Gerenciamento eficiente de memória com Valgrind
+
+O projeto foi testado com Valgrind para verificar o gerenciamento dinâmico de memória:
+
+```text
 ==4439== HEAP SUMMARY:
 ==4439==     in use at exit: 0 bytes in 0 blocks
 ==4439==   total heap usage: 3,197 allocs, 3,197 frees, 130,267 bytes allocated
-==4439== 
+==4439==
 ==4439== All heap blocks were freed -- no leaks are possible
-==4439== 
+==4439==
 ==4439== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-
 ```
+
+**Resultado:** 3.197 alocações e 3.197 liberações, sem vazamentos de memória ou erros detectados pelo Valgrind no teste realizado.
+
 
 ## 📄 Licença
 
