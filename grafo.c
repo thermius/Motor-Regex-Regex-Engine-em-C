@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*Criar um estado com transições nulas e retorna um ponteiro para ele ou NULL com transições nulas.*/
+/*Criar um estado com transições nulas e retorna um ponteiro para ele ou NULL*/
 Estado *CriarEstado (int sequencia)
 {
     Estado *novo_estado = malloc (sizeof(Estado));
