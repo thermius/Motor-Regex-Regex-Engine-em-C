@@ -23,6 +23,68 @@ Estado *CriarAFN (Lexer *lexer, Estado **aceitacao, int *quant_estados)
     {
         switch (lexer->token.tipo)
         {
+            /*Cria o grafo para concatenção*/
+            case ABERTURA_COLCHETES:
+            {
+                /*Obtem o proximo token*/
+                ObterProximoToken(lexer);
+
+                /*Estrutura de dados utilizadas*/
+                Elo     elo;
+                Fila    *fila_de_elos = NULL;
+
+                /*concatena enquanto não houver ']'. a abertura e fechamento de escopos DEVE ser tratada antes de constuir o AFN*/
+                while (lexer->token.tipo != FECHAMENTO_COLCHETES)
+                {   
+                    /*cria o grafo de forma na forma 'q0----a----NULL' que será chamado de elo*/
+                    Estado      *q0     = CriarEstado(seq++);
+                    Transicao   *t0     = CriarTransicao(lexer->token.valor, NULL);
+                    AdicionarTransicao1 (q0, t0);
+                    elo.estado          = q0;
+
+                    /*enfileira o elo*/
+                    Enfileirar (&fila_de_elos,&elo,sizeof(elo),0, ENFILEIRAR_DADO);
+
+                    /*Obtem o proximo token*/
+                    ObterProximoToken(lexer);
+
+                }
+
+                /*obtem o estado de partida da concatenação*/
+                Elo     *elo_de_partida         = (Elo*) Desenfileirar (&fila_de_elos);
+                Estado  *concatenacao_corrente  = elo_de_partida->estado;
+                Elo     *elo_corrente           = NULL;
+
+                /*enquanto a fila não estiver vazia, remove os elos e liga por meio de transições diretas, sem necessidade de EPSILON*/
+                while (!VazioFila (fila_de_elos))
+                {
+
+                    /*remove um elo da fila*/
+                    elo_corrente = (Elo*) Desenfileirar (&fila_de_elos);
+
+                    /*liga a o estado de concatenação corrente ao elo corrente no formato 'q0----a----q1----b----q2---NULL'*/
+                    LigarTransicao (concatenacao_corrente->transicao1, elo_corrente->estado);
+                    concatenacao_corrente = elo_corrente->estado;
+                    free (elo_corrente);
+                }
+
+                /*o ultimo estado sempre teŕa uma transição para NULL, criamos então qn para fechar o ciclo e formar o fragmento: 'q0----a----q1----b----q2---qn'*/
+                Estado  *qn  = CriarEstado(seq++);
+                LigarTransicao (concatenacao_corrente->transicao1, qn);
+
+                /*Cria o fragmento e empilha*/
+                Fragmento novo_fragmento;
+                novo_fragmento.inicio   = elo_de_partida->estado;
+                novo_fragmento.fim      = qn;
+                Empilhar (&pilha_fragmentos, &novo_fragmento, sizeof(novo_fragmento), 0, EMPILHAR_DADO_APONTADO);
+
+                /*libera a memoria*/
+                DestruirFila (&fila_de_elos);
+                free (elo_de_partida);
+
+            } 
+                break;
+
             /*Cria o grafo para caracteres*/
             case CARACTERE:
             {
