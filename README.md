@@ -19,6 +19,7 @@ O projeto tem como foco a aplicação prática de conceitos de **Teoria de Lingu
 - Suporte a qualquer caractere do alfabeto representável por `char`.
 - Suporte ao operador `*` — Fechamento de Kleene.
 - Suporte ao operador `|` — Alternância (OU).
+- Suporte a alternância de procedência por meio de parenteses `()`.
 - Utilização de **transições $\epsilon$** na construção do autômato.
 - Representação explícita de **estados, transições e grafos**.
 - Construção dos fragmentos do AFN através de **pilha**.
