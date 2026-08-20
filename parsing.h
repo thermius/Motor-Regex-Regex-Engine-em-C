@@ -7,6 +7,10 @@ typedef struct _Fragmento {
     Estado *fim;
 } Fragmento;
 
+/*Estrutura que guarda os elos que dão suporte a concatenação*/
+typedef struct _Elo {
+    Estado      *estado;
+} Elo;
 
 /*API*/
 Estado  *CriarAFN (Lexer *lexer, Estado **aceitacao, int *quant_estados);
