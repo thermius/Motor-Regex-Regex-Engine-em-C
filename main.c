@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     string = ObterPonteiroDoBuffer(&buffer2);
 
     /*Pede o regex*/
-    printf ("Informe o regex a ser utilizado (suporta qualquer alfabeto ancii, * e |)\n");
+    printf ("Informe o regex a ser utilizado (suporta qualquer alfabeto ancii, * e | e concatenacao por meio de '[' ']')\n");
     LerEntrada(&buffer);
     printf("\n");
 
