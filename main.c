@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     printf("\n");
 
     /*Converte o regex para posfixo*/
-    regex_posfixado = ConverterParaPosfixo(ObterPonteiroDoBuffer(&buffer), ObterTamanhoDoBuffer(&buffer));
+    regex_posfixado = ConverterRegexParaPosfixo(ObterPonteiroDoBuffer(&buffer));
 
     InicializarLexer(&lexer, regex_posfixado);
     printf("[ NOTA ] - main(): regex postfixado: %s\n",regex_posfixado);
