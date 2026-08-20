@@ -2,104 +2,108 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "posfixo.h"
-#include "pilha.h"
 
 /*Converte uma string infixa para posfixa. Retorna um ponteiro para string posfixa ou NULL*/
-char *ConverterParaPosfixo (char *entrada, unsigned int tamanho_string)
+char *ConverterRegexParaPosfixo (char *entrada)
 {
-	/*Aloca memoria para a saida posfixada e  testa o ponteiro*/
-	char *ptr_saida	= malloc (tamanho_string + 1);
-	if (ptr_saida == NULL) return NULL;
+	/*calcula o tamanho da string*/
+	int index = 0;
+	while (entrada [index++]);
 
-	/*Pilha que guarda os operadores*/
-	Pilha 	*pilha_operadores = NULL;
+	/*aloca memoria para a string posfixada e zera o index*/	
+	char *saida = malloc (index);
+	if (saida == NULL) return NULL;
+	index = 0;
 
-	/*Index que aponta para a string de entrada e saida*/
-	int 	index_entrada 		= 0;
-	int 	index_saida 		= 0;
+	/*estrutura da dados utilizadas*/
+	Pilha *operadores = NULL;
 
-	/*Loop que faz a convesão*/
-	while (entrada [index_entrada])
+	/*loop que avalia a entrada*/
+	int posicao_saida = 0;
+	while (entrada[index])
 	{
-		/*Se for caractere alfanumerico, vai direto para saida*/
-		if (isalnum (entrada[index_entrada]))
-		{
- 			ptr_saida [index_saida++] = entrada [index_entrada++];
- 			continue;
-		}
 
-		if (entrada[index_entrada] == '*')
+		switch (entrada [index])
 		{
-		    ptr_saida[index_saida++] = entrada[index_entrada++];
-		    continue;
-		}
-		/*Se abertura, vai direto para a pilha*/
-		if (entrada[index_entrada] == '(')
-		{
-			Empilhar (&pilha_operadores, &entrada[index_entrada], sizeof (char),0, EMPILHAR_DADO_APONTADO);
-			index_entrada++;
-			continue;
-		}
 
-		/*Se fechamento, desempilha tudo e joga na saida enquanto não for vazio ou '('*/
-		if (entrada[index_entrada] == ')')
-		{
-			char *elemento = NULL;
-			while (!Vazio (pilha_operadores) && *(char*)Topo (pilha_operadores)!= '(')
+		/*se parenteses vai direto para a pilha*/
+		case '(':
+			Empilhar (&operadores, &entrada[index], sizeof (char), 0 , EMPILHAR_PONTEIRO);
+			break;
+
+		/*se fechamento de paranteses, desempilha tudo e joga na saida até encontrar o parenteses de abertura*/
+		case ')':
+			char *ptr_elemento = NULL;
+			while (!Vazio(operadores))
 			{
-				elemento = (char*) Desempilhar (&pilha_operadores);
-				ptr_saida [index_saida++] = *elemento;
-				free (elemento);
+				ptr_elemento = (char*) Desempilhar (&operadores);
+				if (*ptr_elemento == '(') break;
+				saida[posicao_saida++] = *ptr_elemento;
 			}
+			break;
 
-			/*Remove o '(' da pilha*/
-			elemento = (char*)Desempilhar (&pilha_operadores); if (elemento!= NULL) free (elemento);
-
-			/*Avança  a entrada*/
-			index_entrada++;
-			continue;
-		}
-
-		/*Se qualquer operador regex*/
-		else
-		{	
-			/*Enquanto a procedencia do topo da pilha for maior ou igual, desempilha o topo e insere na saida*/
-			while ( Topo (pilha_operadores) != NULL && Procedencia( *(char*) Topo (pilha_operadores)) >= Procedencia ( entrada[index_entrada]))
+		case '*':
+		case '+':
+		case '|':
+			/*avalia a procedencia de forma a garantir que no topo sempre esteja o elemento de maior procedencia*/
+			while (!Vazio(operadores))
 			{
-				char *elemento = (char*) Desempilhar (&pilha_operadores);
-				ptr_saida [index_saida++] = *elemento;
-				free (elemento);
+				/*obtem o operador do topo da pilha sem desempilhar*/
+				char *ptr_elemento = (char*) Topo (operadores);
 
+				/*se o elemento do topo tiver procedencia maior ou igual a entrada, o elemento do topo deve ir primeiro para a saida*/
+				if ( AvaliarProcedencia (*ptr_elemento) >= AvaliarProcedencia (entrada[index]) )
+				{
+					/*pega o elemento do topo e insere na saida*/
+					ptr_elemento = (char*) Desempilhar (&operadores);
+					saida[posicao_saida++] = *ptr_elemento;
+				}
+				/*se não houver procedencia, interrompe o loop para evitar o algoritmo zerar a pilha indevidamente*/
+				else break;
+				
 			}
-			/* Empilha o operador atual no momento em que sua procedencia for menor que o topo*/
-	        Empilhar (&pilha_operadores, &entrada[index_entrada], sizeof(char), 0, EMPILHAR_DADO_APONTADO);
-	        index_entrada++;
-	        continue;
+			
+			/*se a procedencia não for maior, alarme falso, insere para a pilha*/
+			Empilhar (&operadores, &entrada[index], sizeof (char), 0 , EMPILHAR_PONTEIRO);
+			break;
+
+			/*qualquer outra coisa é enviada diretamente a saida*/
+			default:
+				saida[posicao_saida++] = entrada[index];
+				break;
 		}
-
-
-    }
-
-	/*Ao fim da string, esvazia a pilha de operadores*/
-	while (!Vazio(pilha_operadores))
-	{
-		char *elemento = (char*) Desempilhar (&pilha_operadores);
-		ptr_saida [index_saida++] = *elemento;
-		free (elemento);
+		index++;
 	}
 
-	/*Encerra a string e retorna*/
-	ptr_saida[index_saida] = '\0';
-	return ptr_saida;
+	/*o que sobra da pilha é enviado diretamente a saida*/
+	while (!Vazio (operadores)) 
+	{
+		/*desempilha um elemento*/
+		char *ptr_elemento = (char*) Desempilhar (&operadores);
+		/*se null, encerra*/
+		if (ptr_elemento == NULL) break;
+		/*joga na saida e avança o index*/
+		saida[posicao_saida++] = *ptr_elemento;
+	}
+
+	/*finaliza a saida com 0*/
+	saida[posicao_saida] = 0;
+	
+	/*Destroi a pilha de operadores*/
+	DestruirPilhaTotal(&operadores);
+
+	/*retorna o ponteiro para a saida posfixada*/
+	return saida;
 }
 
 /*Retorna um inteiro de procedencia dos operadores regex. Quanto mais alta a procedencia, maior é o valor retornado*/
-int Procedencia(char operador)
+int AvaliarProcedencia(char operador)
 {
     switch (operador)
     {
     	/*Maiores procedencias*/
         case '*':
+		case '+':
             return 2;
 
        	/*OU*/
