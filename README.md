@@ -28,7 +28,6 @@ O projeto tem como foco a aplicação prática de conceitos de **Teoria de Lingu
 - Análise sintática através de **Parser**.
 - Conversão da expressão para **notação pós-fixa** durante o processamento.
 - Gerenciamento manual de memória (Criação, travessia e rotina para destruição/liberação do grafo).
-- Separação clara de responsabilidades entre análise, construção e representação do autômato.
 
 ---
 
@@ -42,7 +41,6 @@ O projeto tem como foco a aplicação prática de conceitos de **Teoria de Lingu
 | `[]` | Concatenação | `[abc]` | Concatena os elementos do escopo, formando uma sequência que deve ser reconhecida na ordem especificada. |
 
 ---
-Limitação atual: a implementação não possui um operador explícito de concatenação e não trata concatenação implícita entre elementos. Por exemplo, (ab)* não é interpretado como repetição de ab.
 
 ## 🏗️ Arquitetura do Motor
 
