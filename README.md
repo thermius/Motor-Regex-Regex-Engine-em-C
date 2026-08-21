@@ -105,7 +105,7 @@ Após compilar, basta rodar o executável gerado:
 
 O projeto encontra-se em desenvolvimento e possui algumas limitações deliberadas. O objetivo atual é explorar, de forma educacional, as etapas envolvidas na construção de um motor de expressões regulares, desde a análise da entrada até a construção e execução do autômato.
 
-A abertura e o fechamento dos escopos precisam ser resolvidos antes da construção do AFN. Isso cria uma dependência entre as etapas de análise sintática e construção do autômato que ainda está sendo refinada.
+Atualmente, o tratamento de escopos é uma etapa que deve ser concluída antes da construção do AFN. A abertura e o fechamento dos escopos precisam ser identificados e resolvidos durante o processamento da expressão para que a estrutura resultante possa ser corretamente utilizada na construção do autômato.
 
 
 ## 🧹 Gerenciamento eficiente de memória com Valgrind
@@ -113,7 +113,15 @@ A abertura e o fechamento dos escopos precisam ser resolvidos antes da construç
 O projeto foi testado com Valgrind para verificar o gerenciamento dinâmico de memória:
 
 ```text
-==11686== ==11686== HEAP SUMMARY: ==11686== in use at exit: 0 bytes in 0 blocks ==11686== total heap usage: 52,673 allocs, 52,673 frees, 1,705,096 bytes allocated ==11686== ==11686== All heap blocks were freed -- no leaks are possible ==11686== ==11686== For lists of detected and suppressed errors, rerun with: -s ==11686== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==11686==
+==11686== HEAP SUMMARY:
+==11686==     in use at exit: 0 bytes in 0 blocks
+==11686==     total heap usage: 52,673 allocs, 52,673 frees, 1,705,096 bytes allocated
+==11686==
+==11686== All heap blocks were freed -- no leaks are possible
+==11686==
+==11686== For lists of detected and suppressed errors, rerun with: -s
+==11686== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
 
 **Resultado:** 52,673 alocações e 52,673 liberações, sem vazamentos de memória ou erros detectados pelo Valgrind no teste realizado.
