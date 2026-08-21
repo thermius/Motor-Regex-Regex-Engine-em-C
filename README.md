@@ -20,6 +20,7 @@ O projeto tem como foco a aplicação prática de conceitos de **Teoria de Lingu
 - Suporte ao operador `*` — Fechamento de Kleene.
 - Suporte ao operador `|` — Alternância (OU).
 - Suporte a alternância de procedência por meio de parenteses `()`.
+- Suporte a concatenação por meio de colchetes `[]`.
 - Utilização de **transições $\epsilon$** na construção do autômato.
 - Representação explícita de **estados, transições e grafos**.
 - Construção dos fragmentos do AFN através de **pilha**.
@@ -34,10 +35,11 @@ O projeto tem como foco a aplicação prática de conceitos de **Teoria de Lingu
 ## 🛠️ Operadores Suportados
 
 | Operador | Nome | Exemplo | Descrição |
-| :---: | :---: | :---: | :--- |
+| :---: | :--- | :---: | :--- |
 | `*` | Fecho de Kleene | `a*` | Aceita 0 ou mais ocorrências do elemento. |
 | `\|` | União (OU) | `a\|b` | Aceita o caractere `a` OU o caractere `b`. |
 | `()` | Agrupamento | `(a\|b)*` | Altera a precedência de avaliação dos operadores. |
+| `[]` | Concatenação | `[abc]` | Concatena os elementos do escopo, formando uma sequência que deve ser reconhecida na ordem especificada. |
 
 ---
 Limitação atual: a implementação não possui um operador explícito de concatenação e não trata concatenação implícita entre elementos. Por exemplo, (ab)* não é interpretado como repetição de ab.
@@ -55,39 +57,26 @@ Regex Infixo         Regex Pós-fixo              AFN (Thompson)          Simula
 ## 💻 Exemplo de Uso no Terminal
 
 ```text
-thermius@arch: ./a.out 
 Informe a string que o regex ira analisar
-pedroooeeeiioouu
-Informe o regex a ser utilizado (suporta qualquer alfabeto ancii, * e |)
-pedr(a|e|i|o|u)*
+pedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedroanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanajoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaomariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamaria
+Informe o regex a ser utilizado (suporta qualquer alfabeto ancii, * e | e concatenacao por meio de '[' ']')
+([pedro]*)([ana]*)([joao]*)([maria]*)
 
-[ NOTA ] - main(): regex postfixado: pedrae|i|o|u|*
-pedroooeeeiioouu
+[ NOTA ] - main(): regex postfixado: [pedro]*[ana]*[joao]*[maria]*
+pedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedroanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanajoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaomariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamaria
 =================================
   ✅ RECOGNIZED (Match Completo!)
 =================================
 
 thermius@arch: ./a.out 
 Informe a string que o regex ira analisar
-pedoeee
-Informe o regex a ser utilizado (suporta qualquer alfabeto ancii, * e |)
-pedr*oe*
+pedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedroanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanajoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaomariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariax
+Informe o regex a ser utilizado (suporta qualquer alfabeto ancii, * e | e concatenacao por meio de '[' ']')
+([pedro]*)([ana]*)([joao]*)([maria]*)
 
-[ NOTA ] - main(): regex postfixado: pedr*oe*
-pedoeee
-=================================
-  ✅ RECOGNIZED (Match Completo!)
-=================================
-
-thermius@arch: ./a.out 
-Informe a string que o regex ira analisar
-aaeeeeeeeiiiiiuuuuuuc
-Informe o regex a ser utilizado (suporta qualquer alfabeto ancii, * e |)
-a*e*i*o*u*
-
-[ NOTA ] - main(): regex postfixado: a*e*i*o*u*
-aaeeeeeeeiiiiiuuuuuu
-Falhou no caractere 'c'
+[ NOTA ] - main(): regex postfixado: [pedro]*[ana]*[joao]*[maria]*
+pedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedropedroanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanaanajoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaojoaomariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamariamaria
+Falhou no caractere 'x'
 
 =================================
   ❌ REJECTED (String nao casa)
@@ -111,21 +100,23 @@ Após compilar, basta rodar o executável gerado:
 ```bash
 ./motor_regex
 ```
+
+## ⚠️ Limitações
+
+O projeto encontra-se em desenvolvimento e possui algumas limitações deliberadas. O objetivo atual é explorar, de forma educacional, as etapas envolvidas na construção de um motor de expressões regulares, desde a análise da entrada até a construção e execução do autômato.
+
+A abertura e o fechamento dos escopos precisam ser resolvidos antes da construção do AFN. Isso cria uma dependência entre as etapas de análise sintática e construção do autômato que ainda está sendo refinada.
+
+
 ## 🧹 Gerenciamento eficiente de memória com Valgrind
 
 O projeto foi testado com Valgrind para verificar o gerenciamento dinâmico de memória:
 
 ```text
-==4439== HEAP SUMMARY:
-==4439==     in use at exit: 0 bytes in 0 blocks
-==4439==   total heap usage: 3,197 allocs, 3,197 frees, 130,267 bytes allocated
-==4439==
-==4439== All heap blocks were freed -- no leaks are possible
-==4439==
-==4439== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==11686== ==11686== HEAP SUMMARY: ==11686== in use at exit: 0 bytes in 0 blocks ==11686== total heap usage: 52,673 allocs, 52,673 frees, 1,705,096 bytes allocated ==11686== ==11686== All heap blocks were freed -- no leaks are possible ==11686== ==11686== For lists of detected and suppressed errors, rerun with: -s ==11686== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
 
-**Resultado:** 3.197 alocações e 3.197 liberações, sem vazamentos de memória ou erros detectados pelo Valgrind no teste realizado.
+**Resultado:** 52,673 alocações e 52,673 liberações, sem vazamentos de memória ou erros detectados pelo Valgrind no teste realizado.
 
 
 ## 📄 Licença
