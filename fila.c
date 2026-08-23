@@ -107,12 +107,6 @@ void *Desenfileirar (Fila **fila)
 
 	/*salva o proximo inicio da fila*/
 	void *proximo_elemento = (void*) (*fila)->ptr_inicio->ptr_proximo;
-
-	/*se vazia, anula o ponteiro para o fim*/
-	if ((*fila)->ptr_inicio == NULL)
-    {
-        (*fila)->ptr_fim = NULL;
-    }
     
 	/*obtem o ponteiro para o dado*/
 	void *ptr_valor = (*fila)->ptr_inicio->ptr_valor;
@@ -122,10 +116,17 @@ void *Desenfileirar (Fila **fila)
 
 	/*altera o inicio da fila*/
 	(*fila)->ptr_inicio = (NodeFila*) proximo_elemento;
+	
+	/*se vazia, anula o ponteiro para o fim*/
+	if ((*fila)->ptr_inicio == NULL)
+    {
+        (*fila)->ptr_fim = NULL;
+    }
 
 	/*retona o ponteiro para o valor*/
 	return ptr_valor;
 }
+
 
 
 /*Destroi a fila liberando memoria dos nodes e dos dados empilhados*/
