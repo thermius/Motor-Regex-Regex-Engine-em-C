@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "fila.h"
 #include "buffer_infinito.c"
 #include "pilha.c"
 #include "parsing.c"
