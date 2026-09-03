@@ -127,7 +127,7 @@ O projeto foi testado com Valgrind para verificar o gerenciamento dinâmico de m
 
 ## 📄 Licença
 
-© 2026. Todos os direitos reservados.
+Todos os direitos reservados.
 
 Este projeto é disponibilizado exclusivamente para fins de portfólio e demonstração técnica. O código-fonte não pode ser copiado, redistribuído, modificado ou utilizado, integral ou parcialmente, sem autorização prévia e explícita do autor.
 
